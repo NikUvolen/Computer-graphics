@@ -1,0 +1,19 @@
+# depslib dependency file v1.0
+1733035401 source:c:\users\mixa2\desktop\first_prj\main.c
+	<windows.h>
+	<GL/gl.h>
+	"headers/menu.h"
+
+1733033165 c:\users\mixa2\desktop\first_prj\headers\menu.h
+
+1733035192 source:c:\users\mixa2\desktop\first_prj\include\menu.c
+	<GL/gl.h>
+	<stdio.h>
+	<stdlib.h>
+	"../stb-master/stb_easy_font.h"
+	"../headers/menu.h"
+
+1682345576 c:\users\mixa2\desktop\first_prj\stb-master\stb_easy_font.h
+	<stdlib.h>
+	<math.h>
+
