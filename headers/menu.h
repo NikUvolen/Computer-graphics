@@ -8,7 +8,7 @@ int addBtnToMenu(
     float textScale,
     void (*function)()
 );
-void ShowMenu();
+void showMenu();
 
 int mouseMoveMenu(float x, float y);
 int mouseDownMenu();

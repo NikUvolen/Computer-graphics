@@ -1,19 +1,18 @@
 #include <windows.h>
 #include <GL/gl.h>
 #include "headers/menu.h"
+#include "headers/character.h"
+#include "headers/texturing.h"
 
 LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
 void EnableOpenGL(HWND hwnd, HDC*, HGLRC*);
 void DisableOpenGL(HWND, HDC, HGLRC);
 
-void speake(char name[20]) {
-    printf("%s\n", name);
-}
+const float FPS = 30.0f;
+int scene = 0;
 
-void Init() {
-    addBtnToMenu("Hi", 50, 50, 900, 150, 10, speake);
-    addBtnToMenu("It's", 50, 250, 900, 150, 10, speake);
-    addBtnToMenu("Test buttons", 50, 450, 900, 150, 10, speake);
+void changeScene() {
+    (scene) ? (scene = 0) : (scene = 1);
 }
 
 int WINAPI WinMain(HINSTANCE hInstance,
@@ -70,9 +69,17 @@ int WINAPI WinMain(HINSTANCE hInstance,
     GetClientRect(hwnd,&rct);
     glOrtho(0,rct.right, rct.bottom, 0, 1, -1);
 
-    Init();
+    addBtnToMenu("Start game", 300, 250, 400, 100, 6, changeScene);
+    addBtnToMenu("Exit", 300, 400, 400, 100, 6, PostQuitMessage);
 
+    unsigned int spriteSheet, background, backgroundMenu, wall;
+    initTexture("src/character-2.png", &spriteSheet);
+    initTexture("src/background.png", &background);
+    initTexture("src/background-menu.png", &backgroundMenu);
+    initTexture("src/brick.png", &wall);
 
+    Character* character = initCharacter(400.0f, 400.0f, spriteSheet);
+    printf("%d", spriteSheet);
     /* program main loop */
     while (!bQuit)
     {
@@ -93,20 +100,26 @@ int WINAPI WinMain(HINSTANCE hInstance,
         else
         {
             /* OpenGL animation code goes here */
+            switch (scene)
+            {
+                case 0:
+                    renderImage(1024.0f, 768.0f, 0, 0, backgroundMenu);
+                    showMenu();
+                    break;
+                case 1:
+                    //renderImage(100.0f, 100.0f, 200.0f, 200.0f, wall);
+                    renderImage(1024.0f, 768.0f, 0, 0, background);
 
-            glClearColor(0.07f, 0.15f, 0.31f, 1.0f);
-            glClear(GL_COLOR_BUFFER_BIT);
+                    drawCharacter(character);
+                    moveController(character);
 
-            glPushMatrix();
-
-                showMenu();
-
-            glPopMatrix();
+                    break;
+            }
 
             SwapBuffers(hDC);
 
             theta += 1.0f;
-            Sleep (1);
+            Sleep (1 + FPS);
         }
     }
 
@@ -147,7 +160,7 @@ LRESULT CALLBACK WindowProc(HWND hwnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
             switch (wParam)
             {
                 case VK_ESCAPE:
-                    PostQuitMessage(0);
+                    changeScene();
                 break;
             }
         }
