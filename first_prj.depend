@@ -61,7 +61,7 @@
 	<stdbool.h>
 	"character.h"
 
-1733156738 source:c:\users\mixa2\desktop\first_prj\include\collisions.c
+1733157319 source:c:\users\mixa2\desktop\first_prj\include\collisions.c
 	<GL/gl.h>
 	<stdbool.h>
 	"../headers/character.h"

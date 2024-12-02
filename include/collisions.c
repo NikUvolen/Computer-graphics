@@ -56,7 +56,7 @@ void _collisionCheck(Character *chrt, float W, float H, float chrtX1, float chrt
         }
     };
 
-    _renderColliders(colliderX1, colliderX2, colliderY1, colliderY2);   // DEBUG RENDER COLLIDERS
+    // _renderColliders(colliderX1, colliderX2, colliderY1, colliderY2);   // DEBUG RENDER COLLIDERS
 }
 
 void collisionCheck(Character *chrt, float xSizeGround, float ySizeGround, float groundsCoords[][2], int numberOfGrounds, float colliders[][4], int numberOfColliders) {
@@ -68,13 +68,13 @@ void collisionCheck(Character *chrt, float xSizeGround, float ySizeGround, float
     float chrtY1 = chrt->posY;
     float chrtY2 = chrt->posY + characterColliderHeight;
 
-    _renderColliders(chrtX1 + chrt->velocityX, chrtX2 + chrt->velocityX, chrtY1 + chrt->velocityY, chrtY2 + chrt->velocityY);   // DEBUG RENDER CHARACTER COLLIDERS
+    // _renderColliders(chrtX1 + chrt->velocityX, chrtX2 + chrt->velocityX, chrtY1 + chrt->velocityY, chrtY2 + chrt->velocityY);   // DEBUG RENDER CHARACTER COLLIDERS
 
     for (int i = 0; i < numberOfGrounds; i++) {
-        float colliderX1 = groundsCoords[i][0];                 //x1
-        float colliderX2 = groundsCoords[i][0] + 362.0f;        //x2
-        float colliderY1 = groundsCoords[i][1];                 //y1
-        float colliderY2 = groundsCoords[i][1] + 111.0f;        //y2
+        float colliderX1 = groundsCoords[i][0];                         //x1
+        float colliderX2 = groundsCoords[i][0] + xSizeGround;           //x2
+        float colliderY1 = groundsCoords[i][1];                         //y1
+        float colliderY2 = groundsCoords[i][1] + ySizeGround - 25.0f;           //y2
         
         _collisionCheck(
             chrt, characterColliderWidth, characterColliderHeight,
