@@ -3,6 +3,7 @@
 #include "headers/menu.h"
 #include "headers/character.h"
 #include "headers/texturing.h"
+#include "headers/collisions.h"
 
 LRESULT CALLBACK WindowProc(HWND, UINT, WPARAM, LPARAM);
 void EnableOpenGL(HWND hwnd, HDC*, HGLRC*);
@@ -10,6 +11,8 @@ void DisableOpenGL(HWND, HDC, HGLRC);
 
 const float FPS = 30.0f;
 int scene = 0;
+const float W = 1440.0f, Y = 840.0f;
+const int buttonWidth = 400, buttonHeight = 100;
 
 void changeScene() {
     (scene) ? (scene = 0) : (scene = 1);
@@ -53,8 +56,8 @@ int WINAPI WinMain(HINSTANCE hInstance,
                           WS_OVERLAPPEDWINDOW,
                           CW_USEDEFAULT,
                           CW_USEDEFAULT,
-                          1024,
-                          768,
+                          W,
+                          Y,
                           NULL,
                           NULL,
                           hInstance,
@@ -69,17 +72,43 @@ int WINAPI WinMain(HINSTANCE hInstance,
     GetClientRect(hwnd,&rct);
     glOrtho(0,rct.right, rct.bottom, 0, 1, -1);
 
-    addBtnToMenu("Start game", 300, 250, 400, 100, 6, changeScene);
-    addBtnToMenu("Exit", 300, 400, 400, 100, 6, PostQuitMessage);
+    // set menu buttons
+    int xPosBtn = W / 2 - buttonWidth / 2;
+    int yPosBtn = Y / 2 - buttonHeight / 2 - 100;
 
-    unsigned int spriteSheet, background, backgroundMenu, wall;
+    addBtnToMenu("Start game", xPosBtn, yPosBtn, 400, 100, 6, changeScene);
+    addBtnToMenu("Exit", xPosBtn, yPosBtn + 150, 400, 100, 6, PostQuitMessage);
+
+    // init texture
+    unsigned int spriteSheet, background, backgroundMenu, ground;
     initTexture("src/character-2.png", &spriteSheet);
-    initTexture("src/background.png", &background);
+    initTexture("src/background-main.png", &background);
     initTexture("src/background-menu.png", &backgroundMenu);
-    initTexture("src/brick.png", &wall);
+    initTexture("src/ground.png", &ground);
 
-    Character* character = initCharacter(400.0f, 400.0f, spriteSheet);
+    // init character
+    Character* character = initCharacter(500.0f, 200.0f, spriteSheet);
     printf("%d", spriteSheet);
+
+    // config ground
+    const float xSizeGround = 362.0f, ySizeGround = 111.0f;
+    #define numberOfGrounds 5
+    const float groundsPos[numberOfGrounds][2] = {
+        {-158.0f, 580.0f},
+        {300.0f, 420.0f},
+        {710.0f, 566.0f},
+        {1116.0f, 295.0f},
+        {1286.0f, 520.0f}
+    };
+
+    // config colliders
+    #define numbersOfCollider 4
+    const float colliders[numbersOfCollider][4] = {
+        {-100.0f, 1440.0f, 0, 150.0f},
+        {-200.0f, 0.0f, 0.0f, 1200.0f},
+        {1440.0f, 1460.0f, 0.0f, 1200.0f}
+    };
+
     /* program main loop */
     while (!bQuit)
     {
@@ -103,15 +132,20 @@ int WINAPI WinMain(HINSTANCE hInstance,
             switch (scene)
             {
                 case 0:
-                    renderImage(1024.0f, 768.0f, 0, 0, backgroundMenu);
+                    renderImage(W, Y, 0, 0, backgroundMenu, 0, Y);
                     showMenu();
                     break;
                 case 1:
-                    //renderImage(100.0f, 100.0f, 200.0f, 200.0f, wall);
-                    renderImage(1024.0f, 768.0f, 0, 0, background);
+                    setGravity(character);
+                    moveController(character);
+
+                    renderImage(W, Y, 0, 0, background, 0, Y);
+                    for (int i = 0; i < numberOfGrounds; i++)
+                        renderImage(xSizeGround, ySizeGround, groundsPos[i][0], groundsPos[i][1], ground, 1, Y);
 
                     drawCharacter(character);
-                    moveController(character);
+
+                    collisionCheck(character, xSizeGround, ySizeGround, groundsPos, numberOfGrounds, colliders, numbersOfCollider);
 
                     break;
             }

@@ -24,5 +24,6 @@ void drawCharacter(Character *chrt);
 void changeAnimation (Character *chrt, int animationNumber);
 void addVelocity(Character *chrt, float horizontal, float vertical);
 void moveController (Character *chrt);
+void setGravity(Character *chrt);
 
 #endif CHARACTER_H

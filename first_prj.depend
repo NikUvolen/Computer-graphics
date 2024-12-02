@@ -1,10 +1,11 @@
 # depslib dependency file v1.0
-1733067235 source:c:\users\mixa2\desktop\first_prj\main.c
+1733156920 source:c:\users\mixa2\desktop\first_prj\main.c
 	<windows.h>
 	<GL/gl.h>
 	"headers/menu.h"
 	"headers/character.h"
 	"headers/texturing.h"
+	"headers/collisions.h"
 
 1733060025 c:\users\mixa2\desktop\first_prj\headers\menu.h
 
@@ -19,20 +20,20 @@
 	<stdlib.h>
 	<math.h>
 
-1733067292 c:\users\mixa2\desktop\first_prj\headers\character.h
+1733136488 c:\users\mixa2\desktop\first_prj\headers\character.h
 	<stdbool.h>
 
-1733060040 c:\users\mixa2\desktop\first_prj\headers\texturing.h
+1733142735 c:\users\mixa2\desktop\first_prj\headers\texturing.h
 	"texturing.h"
 
-1733069752 source:c:\users\mixa2\desktop\first_prj\include\character.c
+1733139746 source:c:\users\mixa2\desktop\first_prj\include\character.c
 	<GL/gl.h>
 	<winuser.h>
 	<stdbool.h>
 	"../headers/character.h"
 	"../headers/texturing.h"
 
-1733069302 source:c:\users\mixa2\desktop\first_prj\include\texturing.c
+1733149510 source:c:\users\mixa2\desktop\first_prj\include\texturing.c
 	<GL/gl.h>
 	<stdio.h>
 	<stdlib.h>
@@ -55,4 +56,14 @@
 	<emmintrin.h>
 	<intrin.h>
 	<arm_neon.h>
+
+1733145537 c:\users\mixa2\desktop\first_prj\headers\collisions.h
+	<stdbool.h>
+	"character.h"
+
+1733156738 source:c:\users\mixa2\desktop\first_prj\include\collisions.c
+	<GL/gl.h>
+	<stdbool.h>
+	"../headers/character.h"
+	"../headers/collisions.h"
 

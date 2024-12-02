@@ -37,9 +37,13 @@
 			<Add library="gdi32" />
 		</Linker>
 		<Unit filename="headers/character.h" />
+		<Unit filename="headers/collisions.h" />
 		<Unit filename="headers/menu.h" />
 		<Unit filename="headers/texturing.h" />
 		<Unit filename="include/character.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="include/collisions.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="include/menu.c">
@@ -51,9 +55,6 @@
 		<Unit filename="include/texturing.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="src/character.png">
-			<Option link="1" />
 		</Unit>
 		<Unit filename="stb-master/stb_easy_font.h" />
 		<Unit filename="stb-master/stb_image.h" />

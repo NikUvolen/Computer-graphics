@@ -36,25 +36,7 @@ void initTexture(char* pathToImg, unsigned int *texture) {
     stbi_image_free(data);
 }
 
-void renderImage(float width, float height, float xPos, float yPos, unsigned int texture) {
-    float vertices[] = {
-        xPos + width, yPos + height, 0.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 1.0f,
-
-        xPos + width, yPos, 0.0f,
-        1.0f, 1.0f, 1.0f,
-        1.0f, 0.0f,
-
-        xPos, yPos, 0.0f,
-        1.0f, 1.0f, 1.0f,
-        0.0f, 0.0f,
-
-        xPos, yPos + height, 0.0f,
-        1.0f, 1.0f, 1.0f,
-        0.0f, 1.0f,
-    };
-
+void _render(float vertices[], unsigned int texture) {
     glEnable(GL_TEXTURE_2D);
     glBindTexture(GL_TEXTURE_2D, texture);
     glEnable(GL_ALPHA_TEST);
@@ -74,6 +56,51 @@ void renderImage(float width, float height, float xPos, float yPos, unsigned int
     //-
     glPopMatrix();
     glDisable(GL_ALPHA_TEST);
+}
+
+void renderImage(float width, float height, float xPos, float yPos, unsigned int texture, int isGround, float screenHight) {
+    if (isGround) {
+        float vertices[] = {
+            xPos + width, screenHight - yPos - height, 0.0f,
+            1.0f, 1.0f, 1.0f,
+            -1.0f, -1.0f,
+
+            xPos + width, screenHight - yPos, 0.0f,
+            1.0f, 1.0f, 1.0f,
+            -1.0f, 0.0f,
+
+            xPos, screenHight - yPos, 0.0f,
+            1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f,
+
+            xPos, screenHight - yPos - height, 0.0f,
+            1.0f, 1.0f, 1.0f,
+            0.0f, -1.0f,
+        };
+
+        _render(vertices, texture);
+    } 
+    else {
+        float vertices[] = {
+            xPos + width, yPos + height, 0.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 1.0f,
+
+            xPos + width, yPos, 0.0f,
+            1.0f, 1.0f, 1.0f,
+            1.0f, 0.0f,
+
+            xPos, yPos, 0.0f,
+            1.0f, 1.0f, 1.0f,
+            0.0f, 0.0f,
+
+            xPos, yPos + height, 0.0f,
+            1.0f, 1.0f, 1.0f,
+            0.0f, 1.0f,
+        };
+
+        _render(vertices, texture);
+    }
 }
 
 void renderImageFromMatrix (float vertices[], unsigned int texture)

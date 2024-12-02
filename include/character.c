@@ -5,28 +5,25 @@
 #include "../headers/character.h"
 #include "../headers/texturing.h"
 
-const int WINDOW_HEIGHT = 768;
-float floor_level = 200;
+const int WINDOW_HEIGHT = 840;
 
-void _setGravity(Character *chrt)
+void setGravity(Character *chrt)
 {
-    if (chrt->inAir) {
-        chrt->velocityY -= 9.8f;
+    
+    if (chrt->velocityY < 0)
+    {
+        chrt->inAir = true;
     }
-    else {
-        chrt->velocityX *= 0.8f;
+    if (chrt->inAir == false)
+    {
+        chrt->velocityX *= 0.8f;              //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ?
         chrt->velocityY *= 0.8f;
     }
 
-    chrt->posX += chrt->velocityX;
+    chrt->posX += chrt->velocityX;         //пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ
     chrt->posY += chrt->velocityY;
 
-
-    if (chrt->inAir && chrt->posY + chrt->velocityY<floor_level) {
-        chrt->velocityY = 0;
-        chrt->inAir = false;
-        chrt->posY = floor_level;
-    }
+    chrt->velocityY -= 9.8f;    
 }
 
 Character* initCharacter(float x, float y, unsigned int sprite) {
@@ -75,7 +72,7 @@ void drawCharacter(Character *chrt) {
         vertices[16] = vertices[24] += chrt->width;
     }
 
-    _setGravity(chrt);
+    //_setGravity(chrt);
 
     renderImageFromMatrix(vertices, chrt->spriteSheet);
 
@@ -115,7 +112,7 @@ void moveController (Character *chrt) {
     }
 
     if (GetKeyState(VK_UP)<0 && chrt->inAir != true) {
-        addVelocity(chrt, 0.0f, 70.0f);
+        addVelocity(chrt, 0.0f, 80.0f);
         chrt -> inAir = true;
     }
     if (GetKeyState(VK_DOWN)<0 && chrt->inAir) {
