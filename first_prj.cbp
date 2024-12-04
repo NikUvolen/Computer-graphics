@@ -52,7 +52,6 @@
 		<Unit filename="include/texturing.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="include/texturing.h" />
 		<Unit filename="main.c">
 			<Option compilerVar="CC" />
 		</Unit>

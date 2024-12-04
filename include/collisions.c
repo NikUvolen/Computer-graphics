@@ -14,6 +14,22 @@ bool _isThereCollisionInNextFrame(float chrtX1, float chrtX2, float chrtY1, floa
     );
 }
 
+bool _checkBottomCollision(float chrtX1, float chrtX2, float chrtY1, float chrtY2,float colliderX1, float colliderX2, float colliderY1) {
+    return _isOverlap(chrtX1, chrtX2, chrtY1, chrtY2, colliderX1, colliderX2, chrtY1, colliderY1);
+}
+
+bool _checkUpCollision(float chrtX1, float chrtX2, float chrtY1, float chrtY2,float colliderX1, float colliderX2, float colliderY2) {
+    return _isOverlap(chrtX1, chrtX2, chrtY1, chrtY2, colliderX1, colliderX2, colliderY2, chrtY2);
+}
+
+bool _checkLeftCollision(float chrtX1, float chrtX2, float chrtY1, float chrtY2,float colliderX2, float colliderY1, float colliderY2) {
+    return _isOverlap(chrtX1, chrtX2, chrtY1, chrtY2, colliderX2, chrtX2, colliderY1, colliderY2);
+}
+
+bool _checkRightCollision(float chrtX1, float chrtX2, float chrtY1, float chrtY2,float colliderX1, float colliderY1, float colliderY2) {
+    return _isOverlap(chrtX1, chrtX2, chrtY1, chrtY2, chrtX1, colliderX1, colliderY1, colliderY2);
+}
+
 void _renderColliders(float x1, float x2, float y1, float y2) {
     glPushMatrix();
     // -
@@ -33,26 +49,26 @@ void _collisionCheck(Character *chrt, float W, float H, float chrtX1, float chrt
     bool result = _isThereCollisionInNextFrame(chrtX1 + chrt->velocityX , chrtX2 + chrt->velocityX, chrtY1 + chrt->velocityY, chrtY2 + chrt->velocityY, colliderX1, colliderX2, colliderY1, colliderY2);
     if (result)
     {
-        if (_isOverlap(chrtX1, chrtX2, chrtY1, chrtY2, chrtX1, colliderX1, colliderY1, colliderY2))
-        {
-            chrt->velocityX = 0;
-            chrt->posX = colliderX1 - W * 0.5f - 0.1f;
-        }
-        if (_isOverlap(chrtX1, chrtX2, chrtY1, chrtY2, colliderX1, colliderX2, colliderY2, chrtY2))
+        if (_checkUpCollision(chrtX1, chrtX2, chrtY1, chrtY2, colliderX1, colliderX2, colliderY2))
         {
             chrt->velocityY = 0;
             chrt->posY = colliderY2 + 0.1f;
             chrt->inAir = false;
         }
-        if (_isOverlap(chrtX1, chrtX2, chrtY1, chrtY2, colliderX2, chrtX2, colliderY1, colliderY2))
+        if (_checkBottomCollision(chrtX1, chrtX2, chrtY1, chrtY2, colliderX1, colliderX2, colliderY1))
+        {
+            chrt->velocityY = 0;
+            chrt->posY = colliderY1 - H - 0.1f;
+        }
+        if (_checkLeftCollision(chrtX1, chrtX2, chrtY1, chrtY2, colliderX2, colliderY1, colliderY2))
         {
             chrt->velocityX = 0;
             chrt->posX = colliderX2 + W * 0.5f + 0.1f;
         }
-        if (_isOverlap(chrtX1, chrtX2, chrtY1, chrtY2, colliderX1, colliderX2, chrtY1, colliderY1))
+        if (_checkRightCollision(chrtX1, chrtX2, chrtY1, chrtY2, colliderX1, colliderY1, colliderY2))
         {
-            chrt->velocityY = 0;
-            chrt->posY = colliderY1 - H - 0.1f;
+            chrt->velocityX = 0;
+            chrt->posX = colliderX1 - W * 0.5f - 0.1f;
         }
     };
 
@@ -74,7 +90,7 @@ void collisionCheck(Character *chrt, float xSizeGround, float ySizeGround, float
         float colliderX1 = groundsCoords[i][0];                         //x1
         float colliderX2 = groundsCoords[i][0] + xSizeGround;           //x2
         float colliderY1 = groundsCoords[i][1];                         //y1
-        float colliderY2 = groundsCoords[i][1] + ySizeGround - 25.0f;           //y2
+        float colliderY2 = groundsCoords[i][1] + ySizeGround - 25.0f;   //y2
         
         _collisionCheck(
             chrt, characterColliderWidth, characterColliderHeight,
@@ -84,10 +100,10 @@ void collisionCheck(Character *chrt, float xSizeGround, float ySizeGround, float
     }
 
     for (int i = 0; i < numberOfColliders; i++) {
-        float colliderX1 = colliders[i][0]; //x1
-        float colliderX2 = colliders[i][1]; //x2
-        float colliderY1 = colliders[i][2]; //y1
-        float colliderY2 = colliders[i][3]; //y2
+        float colliderX1 = colliders[i][0];                             //x1
+        float colliderX2 = colliders[i][1];                             //x2
+        float colliderY1 = colliders[i][2];                             //y1
+        float colliderY2 = colliders[i][3];                             //y2
 
         _collisionCheck(
             chrt, characterColliderWidth, characterColliderHeight,
